@@ -6,10 +6,25 @@
       "runtime": "vercel-php@0.7.5"
     }
   },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    },
+    {
+      "src": "**/*.php",
+      "use": "vercel-php@0.7.5"
+    }
+  ],
   "routes": [
     {
       "src": "/assets/(.*)",
       "dest": "/public/$1"
+    },
+    {
+      "src": "/api/(.*).php",
+      "dest": "/api/$1.php"
     },
     {
       "src": "/(.*).php",
