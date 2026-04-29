@@ -1,1 +1,0 @@
-import{N as s,_ as o}from"./FooterComponent-tGmseTI5.js";import{a as t,f as r,e,b as c,s as n}from"./index-Bv92wQuV.js";const _={class:"public-layout"},p={style:{"padding-top":"70px"}},u={__name:"PublicLayout",setup(i){return(a,l)=>(t(),r("div",_,[e(s),c("main",p,[n(a.$slots,"default")]),e(o)]))}};export{u as _};
