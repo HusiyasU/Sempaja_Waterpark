@@ -1,17 +1,20 @@
 {
   "version": 2,
-  "functions": {
-    "api/*.php": {
-      "runtime": "vercel-php@0.7.5"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
     },
-    "*.php": {
-      "runtime": "vercel-php@0.7.5"
+    {
+      "src": "**/*.php",
+      "use": "vercel-php"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/assets/(.*)",
-      "dest": "/dist/assets/$1"
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*).php",
