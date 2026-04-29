@@ -1,34 +1,14 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build"
-    },
-    {
-      "src": "index.php",
-      "use": "vercel-php"
-    },
-    {
-      "src": "api/**/*.php",
-      "use": "vercel-php"
-    }
+    { "src": "package.json", "use": "@vercel/static-build" },
+    { "src": "index.php", "use": "vercel-php" },
+    { "src": "api/**/*.php", "use": "vercel-php" }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/index.php"
-    },
-    {
-      "src": "/(.*).php",
-      "dest": "/$1.php"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+    { "src": "/index.php", "dest": "/index.php" },
+    { "src": "/api/(.*)", "dest": "/index.php" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
