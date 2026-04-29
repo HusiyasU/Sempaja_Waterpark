@@ -35,38 +35,39 @@ if (stripos($contentType, 'multipart/form-data') === false) {
     header('Content-Type: application/json');
 }
 
-$autoload = __DIR__ . '/../vendor/autoload.php';
+// UPDATE: Penyesuaian path vendor agar fleksibel di server
+$autoload = __DIR__ . '/vendor/autoload.php';
+if (!file_exists($autoload)) {
+    $autoload = __DIR__ . '/../vendor/autoload.php';
+}
+
 if (!file_exists($autoload)) {
     http_response_code(500);
     header('Content-Type: application/json');
-    echo json_encode(['success' => false, 'message' => 'vendor/autoload.php tidak ditemukan. Jalankan: composer install']);
+    echo json_encode(['success' => false, 'message' => 'vendor/autoload.php tidak ditemukan.']);
     exit;
 }
 require_once $autoload;
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+// UPDATE: Penyesuaian path .env
+$envPath = file_exists(__DIR__ . '/.env') ? __DIR__ : __DIR__ . '/../';
+$dotenv = Dotenv\Dotenv::createImmutable($envPath);
 $dotenv->load();
 
 use App\Core\Router;
 
 $router = new Router();
-require_once __DIR__ . '/../routes/api.php';
+
+// UPDATE: Penyesuaian path routes api
+$routesPath = file_exists(__DIR__ . '/routes/api.php') ? __DIR__ . '/routes/api.php' : __DIR__ . '/../routes/api.php';
+require_once $routesPath;
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri    = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-$possibleBases = [
-    '/Sempaja_Waterpark/public',
-    '/Sempaja_Waterpark',
-];
+// UPDATE: Menghapus folder lokal Sempaja_Waterpark agar routing Vercel jalan
+$uri = str_replace(['/Sempaja_Waterpark/public', '/Sempaja_Waterpark'], '', $uri);
 
-foreach ($possibleBases as $base) {
-    if (str_starts_with($uri, $base)) {
-        $uri = substr($uri, strlen($base));
-        break;
-    }
-}
-
-if (empty($uri)) $uri = '/';
+if (empty($uri) || $uri === '') $uri = '/';
 
 $router->dispatch($method, $uri);
